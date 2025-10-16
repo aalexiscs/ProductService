@@ -1,4 +1,6 @@
-﻿namespace ProductService.Domain.Entities
+﻿using ProductService.Domain.Constants;
+
+namespace ProductService.Domain.Entities
 {
     public class Product
     {
@@ -40,22 +42,22 @@
         private void ValidateProduct(string name, decimal price, int stock)
         {
             if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentException("El nombre del producto es requerido.");
+                throw new ArgumentException(ErrorMessages.ProductNameRequired);
 
             if (name.Length > 120)
-                throw new ArgumentException("El nombre del producto no puede exceder los 120 caracteres.");
+                throw new ArgumentException(ErrorMessages.ProductNameTooLong);
 
             if (price <= 0)
-                throw new ArgumentException("El precio debe de ser mayor a cero.");
+                throw new ArgumentException(ErrorMessages.ProductPriceInvalid);
 
             if (stock < 0)
-                throw new ArgumentException("El stock no puede ser negativo.");
+                throw new ArgumentException(ErrorMessages.ProductStockInvalid);
         }
 
         public void ReduceStock(int quality)
         {
             if (quality > Stock)
-                throw new ArgumentException("Stock insuficiente.");
+                throw new ArgumentException(ErrorMessages.InsufficientStock);
 
             Stock -= quality;
             UpdatedAt = DateTime.UtcNow;
@@ -64,7 +66,7 @@
         public void IncreaseStock(int quality)
         {
             if (quality <= 0)
-                throw new ArgumentException("La cantidad debe ser mayor a cero.");
+                throw new ArgumentException(ErrorMessages.InvalidQuantity);
 
             Stock += quality;
             UpdatedAt = DateTime.UtcNow;

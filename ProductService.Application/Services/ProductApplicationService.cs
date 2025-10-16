@@ -2,6 +2,7 @@
 using ProductService.Domain.Entities;
 using ProductService.Domain.Repositories;
 using Microsoft.Extensions.Logging;
+using ProductService.Application.Constants;
 
 namespace ProductService.Application.Services
 {
@@ -31,7 +32,7 @@ namespace ProductService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while creating product with name: {ProductName}", dto.Name);
+                _logger.LogError(ex, ErrorMessages.ErrorCreatingProduct);
                 throw;
             }
         }
@@ -70,7 +71,7 @@ namespace ProductService.Application.Services
                 if(product == null)
                 {
                     _logger.LogWarning("Product with ID: {ProductId} not found", id);
-                    throw new KeyNotFoundException($"Product with ID {id} not found.");
+                    throw new KeyNotFoundException(string.Format(ErrorMessages.ProductNotFoundWithId, id));
                 }
                 
                 product.Update(dto.Name, dto.Description, dto.Price, dto.Stock);
@@ -81,7 +82,7 @@ namespace ProductService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while updating product with ID: {ProductId}", id);
+                _logger.LogError(ex, ErrorMessages.ErrorUpdatingProduct);
                 throw;
             }
         }
@@ -97,7 +98,7 @@ namespace ProductService.Application.Services
                 if (product == null)
                 {
                     _logger.LogWarning("Product with ID: {ProductId} not found", id);
-                    throw new KeyNotFoundException($"Product with ID {id} not found.");
+                    throw new KeyNotFoundException(string.Format(ErrorMessages.ProductNotFoundWithId, id));
                 }
 
                 await _repository.DeleteAsync(id);
@@ -107,7 +108,7 @@ namespace ProductService.Application.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error occurred while deleting product with ID: {ProductId}", id);
+                _logger.LogError(ex, ErrorMessages.ErrorDeletingProduct);
                 throw;
             }
         }
