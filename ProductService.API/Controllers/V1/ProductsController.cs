@@ -1,10 +1,12 @@
 ﻿using ProductService.Application.DTOs;
 using ProductService.Application.Services;
 using Microsoft.AspNetCore.Mvc;
+using Asp.Versioning;
 
-namespace ProductService.API.Controllers
+namespace ProductService.API.Controllers.V1
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
+    [ApiVersion("1.0")]
     [ApiController]
     public class ProductsController : ControllerBase
     {
